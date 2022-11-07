@@ -47,6 +47,7 @@ def get_content(html):
             'Цена': block.find('span', class_=re.compile('price-text')).get_text(strip=True).replace('₽', '').replace('\xa0', ''),
             'Город': block.find('a', class_=re.compile('link-link')).get('href').split('/')[1],
             'Район': block.find('div', class_=re.compile('geo-root')).get_text(strip=True),
+            "Дата публикации": block.find('div', class_=re.compile('item-date')).get_text(strip=True),
             'Ссылка': url + block.find('a', class_=re.compile('link-link')).get('href'),
         })
     browser.quit()
