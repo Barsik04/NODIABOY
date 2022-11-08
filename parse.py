@@ -76,9 +76,10 @@ def save_excel(data, file_name):
     writer.save()
     print(f'Данные сохранены в файл "{file_name}.xlsx"')
 
-def parse(url, search):
-    min_price = 1
-    max_price = 10000000
+def parse(url):
+    search = "iphone x 64"  # input('Введите запрос поиска: ')
+    min_price = 1  # input('Введите минимальную стоимость: ')
+    max_price = 10000000  # input('Введите максимальную стоимость: ')
     html = get_html(url,
                     params={'bt': 1, 'pmax': max_price, 'pmin': min_price, 'q': search, 's': '2', 'view': 'gallery'})
     soup = BeautifulSoup(html.text, 'lxml')
@@ -90,8 +91,7 @@ def parse(url, search):
     if html.status_code == 200:
         # вызов функции для вывода количества найденных страниц
         get_pages(html)
-        pagination = int(get_pages(html))
-        # int(input('Сколько страниц спарсить? '))
+        pagination = int(input('Сколько страниц спарсить? '))
         for page in range(1, pagination + 1):
             html = get_html(url,
                             params={'bt': 1, 'p': page, 'pmax': max_price, 'pmin': min_price, 'q': search, 's': '2',
@@ -121,9 +121,5 @@ def get_html(url, params=None):
 session = requests.session()
 adapter = TlsAdapter(ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1)
 session.mount("https://", adapter)
-url = "http://avito.ru"
-parse(url, "Iphone X 64")
-parse(url, "Iphone 11 64")
-parse(url, "Iphone 12 64")
-parse(url, "Iphone 13 128")
-parse(url, "Iphone 14 128")
+url = "http://avito.ru/all?"
+parse(url)
