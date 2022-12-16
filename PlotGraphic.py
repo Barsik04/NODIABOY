@@ -43,15 +43,23 @@ class PlotGraphic():
         city_data = excel_data_df['Город'].value_counts()
         #data = city_data.transpose()
 
-
+        k = 0;
         #data = pd.DataFrame(data = city_data.tolist(), columns = city_data.index.tolist())
-        data  = pd.DataFrame([city_data.tolist()], columns = city_data.index.tolist())
 
-
-
-        print(data)
-        print (city_data.tolist())
-        plt.pie(city_data.tolist(), labels=city_data.index.tolist())
+        counts = city_data.tolist()
+        cities = city_data.index.tolist()
+        print(len(counts))
+        for i in counts:
+            if (i!=1):
+                k = k + 1
+        del counts[len(counts)//10:]
+        del cities[len(cities)//10:]
+        print(len(counts))
+        plt.pie(counts, labels=cities,autopct=absolute_value)
         plt.show()
+
+
+
+
 
 
