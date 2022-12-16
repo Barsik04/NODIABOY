@@ -10,7 +10,7 @@ print(len(excel_data_df.index))
 excel_data_df = excel_data_df.drop_duplicates(subset='Ссылка')
 
 #PlotGraphic.plot_price(excel_data_df, reccomended_price, 'График распределения цен  до чистки данных для ' + file_name)
-PlotGraphic.plot_pie(excel_data_df,  'График распределения после чистки данных по городам для ' + file_name + ' без сервисов' )
+PlotGraphic.plot_pie(excel_data_df,  'График распределения после чистки данных по городам для ' + file_name)
 
 excel_data_df = excel_data_df[excel_data_df["Наименование"].str.contains("pro") == False]
 excel_data_df = excel_data_df[excel_data_df["Наименование"].str.contains("Сбер") == False]

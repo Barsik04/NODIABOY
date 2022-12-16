@@ -41,10 +41,17 @@ class PlotGraphic():
 
     def plot_pie(excel_data_df, header):
         city_data = excel_data_df['Город'].value_counts()
-        city_data = city_data.T
-        df = city_data.to_frame(city_data)
-        #city_data  = city_data.DataFrame(city_data, columns = ['city,' 'count'])
-        print (df.valuetolist())
-        #plot = excel_data_df.plot.pie(y = 'city', figsize=(5, 5))
-        plot.show()
+        #data = city_data.transpose()
+
+
+        #data = pd.DataFrame(data = city_data.tolist(), columns = city_data.index.tolist())
+        data  = pd.DataFrame([city_data.tolist()], columns = city_data.index.tolist())
+
+
+
+        print(data)
+        print (city_data.tolist())
+        plt.pie(city_data.tolist(), labels=city_data.index.tolist())
+        plt.show()
+
 
