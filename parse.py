@@ -8,6 +8,8 @@ import pandas
 import requests
 from bs4 import BeautifulSoup
 from pandas import ExcelWriter
+
+from ReadAndAnalyzeData import ReadAndAnalyzeData
 from TlsAdapter import TlsAdapter
 
 CIPHERS = """ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:AES256-SHA"""
@@ -16,7 +18,7 @@ CIPHERS = """ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA
 def get_content(html):#Подключение драйвера и сбор данных со страницы
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
-    driverServise = Service(executable_path='C:/cd/chromedriver.exe')
+    driverServise = Service(executable_path='./driver/chromedriver.exe')
     browser = webdriver.Chrome(service=driverServise, options=options, executable_path='C:/cd/chromedriver.exe')
     browser.get(html)
     htmlp = browser.page_source
@@ -27,7 +29,7 @@ def get_content(html):#Подключение драйвера и сбор да�
         data.append({
             "Наименование": block.find('h3', class_=re.compile('title-root')).get_text(strip=True),
             'Цена': block.find('span', class_=re.compile('price-text')).get_text(strip=True).replace('₽', '').replace(
-                '\xa0', ''),
+                '\xa0', '').replace('Цена не указана','0'),
             'Город': block.find('a', class_=re.compile('link-link')).get('href').split('/')[1],
             'Район': block.find('div', class_=re.compile('geo-root')).get_text(strip=True),
             "Дата публикации": block.find('div', class_=re.compile('item-date')).get_text(strip=True),
@@ -86,13 +88,24 @@ def parse(url, search):
 def get_html(url, params=None): #Получение html страницы
     session.mount("https://", adapter)
     html = session.request('GET', url, params=params)
-    print("SITE ", html.status_code, " CODE ", html)
+    print("SITE STATUS CODE ", html.status_code)
     return html
 
+# print("Введите значение для поиска: ")
+# search = input()
+# session = requests.session()
+# adapter = TlsAdapter(ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1)
+# session.mount("https://", adapter)
+# url = "http://avito.ru/all?"
+# parse(url, search)
+# print("Провести анализ введенных данных?(y/n)")
+# anwser = input()
+# if (anwser=='y'):
+#     print("Введите ррц")
+#     rrc = input()
+#     ReadAndAnalyzeData.analyze_data(search, rrc)
+# else:
+#     print("Работа программы завершена.")
+ReadAndAnalyzeData.analyze_data("iphone 13 128", 79990)
 
-search = "iphone x 64"
-session = requests.session()
-adapter = TlsAdapter(ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1)
-session.mount("https://", adapter)
-url = "http://avito.ru/all?"
-parse(url, search)
+
