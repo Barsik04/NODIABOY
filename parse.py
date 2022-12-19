@@ -91,22 +91,33 @@ def get_html(url, params=None): #Получение html страницы
     print("SITE STATUS CODE ", html.status_code)
     return html
 
-print("Введите значение для поиска: ")
-search = input()
-start_time = time.time()
-session = requests.session()
-adapter = TlsAdapter(ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1)
-session.mount("https://", adapter)
-url = "http://avito.ru/all?"
-parse(url, search)
-print("--- %s время парсинга ---" % (time.time() - start_time))
-print("Провести анализ введенных данных?(y/n)")
+
+print("parsing (p) or prasing+analyze(p+a):")
 anwser = input()
-if (anwser=='y'):
+if (anwser=='p'):
+
+    print("Введите значение для поиска: ")
+    search = input()
+    start_time = time.time()
+    session = requests.session()
+    adapter = TlsAdapter(ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1)
+    session.mount("https://", adapter)
+    url = "http://avito.ru/all?"
+    parse(url, search)
+    print("--- %s время парсинга ---" % (time.time() - start_time))
+    print("Провести анализ введенных данных?(y/n)")
+    anwser = input()
+    if (anwser=='y'):
+        print("Введите ррц")
+        rrc = input()
+        ReadAndAnalyzeData.analyze_data(search, rrc)
+    else:
+        print("Работа программы завершена.")
+else:
+    print("Введите название файла")
+    search = input()
     print("Введите ррц")
     rrc = input()
     ReadAndAnalyzeData.analyze_data(search, rrc)
-else:
-    print("Работа программы завершена.")
 
 
